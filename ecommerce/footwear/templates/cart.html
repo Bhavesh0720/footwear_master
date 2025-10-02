@@ -1,0 +1,146 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="bread">
+                    <span><a href="{% url 'index' %}">Home</a></span> / 
+                    <span>Shopping Cart</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    {% if msg %}
+        <h3 style="color: red;">{{msg}}</h3>
+    {% endif %}
+</div>
+
+<div class="colorlib-product">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-md-10 offset-md-1">
+                <div class="process-wrap">
+                    <div class="process text-center active">
+                        <p><span>01</span></p>
+                        <h3>Shopping Cart</h3>
+                    </div>
+                    <div class="process text-center">
+                        <p><span>02</span></p>
+                        <h3>Checkout</h3>
+                    </div>
+                    <div class="process text-center">
+                        <p><span>03</span></p>
+                        <h3>Order Complete</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Cart Items -->
+        <div class="row row-pb-lg">
+            <div class="col-md-12">
+                <div class="product-name d-flex">
+                    <div class="col-4 text-left px-3"><span>Product</span></div>
+                    <div class="col-2 text-center"><span>Price</span></div>
+                    <div class="col-3 text-center"><span>Quantity</span></div>
+                    <div class="col-2 text-center"><span>Total</span></div>
+                    <div class="col-1 text-center"><span>Remove</span></div>
+                </div>
+
+                {% for item in cart_items %}
+                <div class="product-cart d-flex align-items-center">
+                    <div class="col-4 d-flex align-items-center">
+                        <a href="{% url 'product_details' item.product.id %}"><div class="product-img me-3" style="background-image: url({{ item.product.main_image.url }});"></div></a>
+                        <h6 class="mb-0 ml-3"><a href="{% url 'product_details' item.product.id %}">{{ item.product.name }}</a></h6>
+                    </div>
+                    <div class="col-2 text-center">
+                        <span class="price">₹{{ item.product.price }}</span>
+                    </div>
+                    <div class="col-3 text-center">
+                    <div class="input-group input-group-sm justify-content-center" style="max-width: 170px; margin:auto;">
+                        <form action="{% url 'cart_minus' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="btn_minus" class="btn btn-outline-secondary">−</button>
+                        </form>
+
+                        <input id="qty-{{ item.id }}" type="number" value="{{ item.quantity }}" min="1"
+                            class="form-control text-center" style="width:30px;">
+
+                        <form action="{% url 'cart_plus' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="btn_plus" class="btn btn-outline-secondary">+</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-2 text-center">
+                    <span class="price">₹{{ item.total_price }}</span>
+                </div>
+                <div class="col-1 text-center">
+                    <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link text-danger p-0">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+                <p class="text-center mt-4">🛒 Your cart is empty.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+        <!-- Totals -->
+        <div class="row row-pb-lg">
+            <div class="col-md-12">
+                <div class="total-wrap">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {% if coupon_id %}
+                                <form action="{% url 'remove_coupon' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row form-group">                                  
+                                        <div class="col-sm-3">
+                                            <input type="submit" value="Remove Coupon" class="btn btn-primary">
+                                        </div>                                    
+                                    </div>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'cart' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="row form-group">                                    
+                                        <div class="col-sm-9">
+                                            <input type="text" name="coupon" class="form-control input-number" placeholder="Your Coupon Number...">
+                                        </div>                                     
+                                        <div class="col-sm-3">
+                                            <input type="submit" value="Apply Coupon" class="btn btn-primary">
+                                        </div>                                    
+                                    </div>
+                                </form>
+                            {% endif %}                            
+                        </div>
+                        <div class="col-sm-4 text-center">
+                            <div class="total">
+                                <div class="sub">
+                                    <p><span>Subtotal:</span> <span>₹{{ total }}</span></p>
+                                    <p><span>Discount:</span> <span>₹{{ discount }}.00</span></p>
+                                </div>
+                                <div class="grand-total">
+                                    <p><span><strong>Total:</strong></span> <span>₹{{ final_amount }}</span></p>
+                                </div>
+                                <a href="{% url 'checkout' %}" class="btn btn-success mt-3">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

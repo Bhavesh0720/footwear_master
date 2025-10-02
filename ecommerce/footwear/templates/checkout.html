@@ -1,0 +1,304 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span>Checkout</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if msg %}
+  <div class="container mt-3 text-center">
+      <div class="alert alert-{{ message.tags }}">
+        <h1>{{ msg }}</h1>
+      </div>
+  </div>
+{% endif %}
+
+<div class="colorlib-product">
+	<div class="container">
+		<div class="row row-pb-lg">
+			<div class="col-sm-10 offset-md-1">
+				<div class="process-wrap">
+					<div class="process text-center active">
+						<p><span>01</span></p>
+						<h3>Shopping Cart</h3>
+					</div>
+					<div class="process text-center active">
+						<p><span>02</span></p>
+						<h3>Checkout</h3>
+					</div>
+					<div class="process text-center">
+						<p><span>03</span></p>
+						<h3>Order Complete</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-8">
+				<form method="post" action="{% url 'save_addresses' %}" class="colorlib-form">
+					{% csrf_token %}
+					<h2>Billing Details</h2>
+					<div class="row">
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<input type="hidden" name="address_id" value="{{ address.id|default_if_none:'' }}">
+								<label for="full_name">Enter Your Name</label>
+								<input type="text" id="full_name" name="full_name" class="form-control" value="{{ address.name|default_if_none:'' }}" placeholder="your full name">
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="email">E-mail Address</label>
+								<input type="email" name="email" id="email" class="form-control" value="{{ address.email|default_if_none:'' }}" placeholder="Your email">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="phone">Phone Number</label>
+								<input type="text" name="phone_no" id="phone" class="form-control" value="{{ address.phone_no|default_if_none:'' }}" placeholder="Your phone number">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="villagecity">Village/City</label>
+								<input type="text" name="village_city" id="villagecity" class="form-control" value="{{ address.village_city|default_if_none:'' }}" placeholder="Village/City Name">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="subdistrict">Sub District</label>
+								<input type="text" name="sub_district" id="subdistrict" class="form-control" value="{{ address.sub_district|default_if_none:'' }}" placeholder="Sub District Name">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="district">District</label>
+								<input type="text" name="district" id="district" class="form-control" value="{{ address.district|default_if_none:'' }}" placeholder="District Name">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="state">State</label>
+								<input type="text" name="state" id="state" class="form-control" value="{{ address.state|default_if_none:'' }}" placeholder="State Name">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="zippincode">Zip/Pin Code</label>
+								<input type="text" name="zip_pin" id="zippincode" class="form-control" value="{{ address.zip_pin|default_if_none:'' }}" placeholder="Enter Your Zip / Pin Code">
+							</div>
+						</div>						
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="address">Address</label>
+								<textarea id="address" name="address" class="form-control" rows="5" placeholder="Enter Your Address">{{ address.address|default_if_none:'' }}</textarea>
+							</div>
+						</div>
+											
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<div class="text-center mt-2">
+									<button name="btn_save_address" type="submit" class="btn btn-primary">Save Address</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		
+		<form action="{% url 'order_complete' %}" method="post" id="checkoutForm">
+		{% csrf_token %}
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="cart-detail pl-1 pr-1">
+						<h2 class="text-center">Saved Addresses</h2>
+						<ul>
+							{% for addr in addresses %}
+								<li class="border-bottom">
+									<div class="form-check d-flex align-items-start mt-1">
+										<input type="radio" name="selected_address" value="{{ addr.id }}" id="addr{{ addr.id }}" required>
+										<label for="addr{{ addr.id }}" class="ms-2">
+											{{ addr.name }}<br>
+											{{ addr.village_city }}, {{ addr.sub_district }},<br>
+											{{ addr.district }}, {{ addr.state }} - {{ addr.zip_pin }}<br>
+											Phone: {{ addr.phone_no }}
+										</label>
+									</div>
+								</li>
+							{% empty %}
+								<li>No addresses found!</li>
+							{% endfor %}
+						</ul>    
+					</div>
+				</div>			
+				
+				<!-- Cart Total -->
+				<div class="col-lg-6">
+					<div class="cart-detail">
+						<h2>Cart Total</h2>
+						<ul>
+							<li>
+								<span>Subtotal</span> <span>₹{{ total }}</span>
+								<ul>
+									{% for i in cart_items %}
+										<li>
+											<span>{{ i.quantity }} x {{ i.product.name }}
+												<br>
+												{% if i.color %}Color: {{ i.color.color }}{% endif %}
+												{% if i.size %} | Size: {{ i.size.value }}{% endif %}
+												{% if i.width %} | Width: {{ i.width.value }}{% endif %}
+											</span> 
+											<span>₹{{ i.total_price }}</span>									
+										</li>
+									{% endfor %}
+								</ul>
+							</li>
+							<li><span>Shipping</span> <span>₹{{ shipping_cost }}.00</span></li>
+							<li><span>Discount</span> <span>₹{{ discount }}.00</span></li>
+							<li><span>Order Total</span> <span>₹{{ final_amount }}</span></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Payment Method -->
+				<div class="col-lg-3">
+					<div class="cart-detail">
+						<h2>Payment Method</h2>
+						<div class="radio">
+							<label><input type="radio" name="payment_method" value="razorpay" id="razorpay_radio" required> Razor Pay</label>
+						</div>
+						<div class="radio">
+							<label><input type="radio" name="payment_method" value="cashondelivery" id="cod_radio"> Cash On Delivery</label>
+						</div>
+						<div class="checkbox">
+							<label><input type="checkbox" name="terms" required> I have read and accept the terms and conditions</label>
+						</div>
+					</div>
+				</div>
+
+				<!-- Place Order -->
+				<div class="col-12 text-center">						
+					<button type="submit" name="btn_place_order" value="place_order" class="btn btn-primary">Place an order</button>					
+				</div>
+			</div>
+		</form>
+
+		<!-- Razorpay Payment Script -->
+		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+		<script>
+			document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+				const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+				
+				if (paymentMethod && paymentMethod.value === 'razorpay') {
+					e.preventDefault();
+					
+					const addressSelected = document.querySelector('input[name="selected_address"]:checked');
+					const termsAccepted = document.querySelector('input[name="terms"]:checked');
+					
+					if (!addressSelected) {
+						alert('Please select a delivery address');
+						return;
+					}
+					
+					if (!termsAccepted) {
+						alert('Please accept terms and conditions');
+						return;
+					}
+					
+					// Razorpay payment options
+					const options = {
+						key: '{{ razorpay_key }}',
+						amount: {{ razorpay_order.amount }},
+						currency: '{{ razorpay_order.currency }}',
+						name: 'Your Store Name',
+						description: 'Order Payment',
+						order_id: '{{ razorpay_order.id }}',
+						handler: function(response) {
+							// Create a form to submit the payment details
+							const form = document.createElement('form');
+							form.method = 'POST';
+							form.action = '{% url "order_complete" %}';
+							
+							// Add CSRF token
+							const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+							const csrfInput = document.createElement('input');
+							csrfInput.type = 'hidden';
+							csrfInput.name = 'csrfmiddlewaretoken';
+							csrfInput.value = csrfToken;
+							form.appendChild(csrfInput);
+							
+							// Add payment response
+							const paymentIdInput = document.createElement('input');
+							paymentIdInput.type = 'hidden';
+							paymentIdInput.name = 'razorpay_payment_id';
+							paymentIdInput.value = response.razorpay_payment_id;
+							form.appendChild(paymentIdInput);
+							
+							const orderIdInput = document.createElement('input');
+							orderIdInput.type = 'hidden';
+							orderIdInput.name = 'razorpay_order_id';
+							orderIdInput.value = response.razorpay_order_id;
+							form.appendChild(orderIdInput);
+							
+							const signatureInput = document.createElement('input');
+							signatureInput.type = 'hidden';
+							signatureInput.name = 'razorpay_signature';
+							signatureInput.value = response.razorpay_signature;
+							form.appendChild(signatureInput);
+							
+							// Add selected address and payment method
+							const addressInput = document.createElement('input');
+							addressInput.type = 'hidden';
+							addressInput.name = 'selected_address';
+							addressInput.value = addressSelected.value;
+							form.appendChild(addressInput);
+							
+							const paymentMethodInput = document.createElement('input');
+							paymentMethodInput.type = 'hidden';
+							paymentMethodInput.name = 'payment_method';
+							paymentMethodInput.value = 'razorpay';
+							form.appendChild(paymentMethodInput);
+							
+							document.body.appendChild(form);
+							form.submit();
+						},
+						prefill: {
+							name: '{{ user.name }}',
+							email: '{{ user.email }}'
+						},
+						theme: {
+							color: '#F37254'
+						},
+						modal: {
+							ondismiss: function() {
+								alert('Payment was cancelled');
+							}
+						}
+					};
+					
+					const rzp = new Razorpay(options);
+					rzp.open();
+				}
+			});
+		</script>
+	</div>
+</div>
+{% endblock %}

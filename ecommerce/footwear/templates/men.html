@@ -1,0 +1,240 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+		<div class="breadcrumbs">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span><a href="{% url 'men' %}">Men</a></span> / <span>{{heading}}</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="breadcrumbs-two">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs-img" style="background-image: url({% static 'images/men_casual_2.avif' %});">
+							<h2>Men's</h2>
+						</div>
+						<div class="menu text-center">
+							<p><a href="{% url 'men' %}?latest_products=">New Arrivals</a> <a href="{% url 'men' %}?best_sellers=1">Best Sellers</a>
+								<a href="{% url 'men' %}?extended_width=W">Extended Widths</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Sub categories -->
+		<div class="colorlib-featured">
+			<div class="container">
+				<div class="row">
+					{% for i in sub_category %} 
+					<div class="col-sm-4 text-center"> 
+						<div class="featured"> 
+							<div class="featured-img featured-img-2" style="background-image: url('{{ i.image.url }}');">
+								<h2>{{ i.name }}</h2> 
+								<p><a href="{% url 'men' i.id %}" class="btn btn-primary btn-lg">Shop now</a></p> 
+							</div> 
+						</div>
+					</div> 
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<!-- show all products -->
+		<div class="colorlib-product">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-3 col-xl-3">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									{% if current_subcategory_id %}
+										<a href="{% url 'men' current_subcategory_id %}"><h3>Clear Filters</h3></a>
+									{% else %}
+										<a href="{% url 'men' %}"><h3>Clear Filters</h3></a>
+									{% endif %}
+								</div>
+								<div class="side border mb-1">
+									<h3>Brand</h3>									
+									<ul>
+										{% for i in brands %}
+											{% if current_subcategory_id %}
+												<li><a href="{% url 'men' current_subcategory_id %}?brand={{ i.id }}{% if request.GET.color %}&color={{request.GET.color}}{% endif %}" class="{% if request.GET.brand == i.id|stringformat:'s' %}bcactive{% endif %}">{{i.brand}}</a></li>
+											{% else %}
+												<li><a href="{% url 'men' %}?brand={{ i.id }}{% if request.GET.color %}&color={{ request.GET.color }}{% endif %}" class="{% if request.GET.brand == i.id|stringformat:'s' %}bcactive{% endif %}">{{i.brand}}</a></li>
+											{% endif %}
+										{% endfor %}
+									</ul>									
+								</div>								
+							</div>							
+							<div class="col-sm-12">
+								<div class="side border mb-1">
+									<h3>Colors</h3>
+									<ul>
+										{% for i in colors %}
+											{% if current_subcategory_id %}
+												<li><a href="{% url 'men' current_subcategory_id %}?color={{ i.id }}{% if request.GET.brand %}&brand={{ request.GET.brand }}{% endif %}" class="{% if request.GET.color == i.id|stringformat:'s' %}bcactive{% endif %}">{{i.color}}</a></li>
+											{% else %}
+												<li><a href="{% url 'men' %}?color={{ i.id }}{% if request.GET.brand %}&brand={{ request.GET.brand }}{% endif %}" class="{% if request.GET.color == i.id|stringformat:'s' %}bcactive{% endif %}">{{i.color}}</a></li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</div>
+								<div class="side border mb-1">
+									<h3>Filter By Price</h3>
+									<a href="?max_price=500">under ₹500</a><br>
+									<a href="?min_price=500&max_price=1000">₹500-₹1000</a><br>
+									<a href="?min_price=1000&max_price=1500">₹1000-₹1500</a><br>
+									<a href="?min_price=1500&max_price=2000">₹1500-₹2000</a><br>
+									<a href="?min_price=2000&max_price=2500">₹2000-₹2500</a><br>
+									<a href="?min_price=2500&max_price=3500">₹2500-₹3500</a><br>
+									<a href="?min_price=3500&max_price=4500">₹3500-₹4500</a><br>
+									<a href="?min_price=4500&max_price=5500">₹4500-₹5500</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-9 col-xl-9">
+						<div class="text-right mb-3">
+							<form method="get" id="sortFormTop" class="d-inline-block">
+								{% if request.GET.brand %}
+									<input type="hidden" name="brand" value="{{ request.GET.brand }}">
+								{% endif %}
+								{% if request.GET.color %}
+									<input type="hidden" name="color" value="{{ request.GET.color }}">
+								{% endif %}
+								{% if request.GET.min_price %}
+									<input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+								{% endif %}
+								{% if request.GET.max_price %}
+									<input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+								{% endif %}
+								<select name="sort" class="form-control d-inline-block" style="width:auto; display:inline-block;" onchange="document.getElementById('sortFormTop').submit()">
+									<option value="">Sort By</option>
+									<option value="low_to_high" {% if request.GET.sort == 'low_to_high' %}selected{% endif %}>Price: Low to High</option>
+									<option value="high_to_low" {% if request.GET.sort == 'high_to_low' %}selected{% endif %}>Price: High to Low</option>
+									<option value="a_to_z" {% if request.GET.sort == 'a_to_z' %}selected{% endif %}>Name: A-Z</option>
+        							<option value="z_to_a" {% if request.GET.sort == 'z_to_a' %}selected{% endif %}>Name: Z-A</option>    
+								</select>
+							</form>
+						</div>
+
+						<div class="row row-pb-md text-center">
+							{% for i in products %}
+							<div class="col-lg-4 mb-4 d-flex">
+								<div class="product-entry border d-flex flex-column w-100">
+									<a href="{% url 'product_details' i.id %}" class="prod-img">
+										<img src="{{ i.main_image.url }}" class="img-fluid" alt="{{ i.name }}">
+									</a>
+									<div class="desc d-flex flex-column flex-grow-1">
+										<h2><a href="{% url 'product_details' i.id %}">{{ i.name }}</a></h2>
+										<span class="cancel-price">₹{{ i.cancel_price }}</span>
+										<span class="price">₹{{ i.price }}</span>
+
+										<!-- Button Container (sticks to bottom) -->
+										<div class="mt-auto">
+											<!-- Add to Cart Button -->
+											<form method="POST" action="{% url 'add_to_cart' i.id %}" class="d-inline">
+												{% csrf_token %}
+												<button type="submit" class="btn btn-sm btn-primary mt-2">
+													Add to Cart
+												</button>
+											</form>
+
+											<!-- Wishlist Button (heart icon) -->
+											<form method="post" action="{% url 'add_to_wishlist' i.id %}" class="d-inline">
+												{% csrf_token %}
+												<button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+													{% if i.id in wishlist_products %}
+														<i class="fa fa-heart fa-lg"></i>
+													{% else %}
+														<i class="far fa-heart fa-lg"></i>
+													{% endif %}
+												</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<div class="block-27">
+									<ul>
+										{% with request.GET.urlencode as query_params %}
+											{% with query_params|cut:"page={{ products.number }}" as clean_query %}
+												{% if products.has_previous %}
+													<li>
+														<a href="?{% if clean_query %}{{ clean_query }}&{% endif %}page={{ products.previous_page_number }}">
+															<i class="ion-ios-arrow-back"></i>
+														</a>
+													</li>
+												{% endif %}
+
+												{% for i in show_page %}
+													{% if i == products.number %}
+														<li class="active"><span>{{ i }}</span></li>
+													{% elif i == '...' %}
+														<li>
+															<a href="?{% if clean_query %}{{ clean_query }}&{% endif %}page=1"><span>…</span></a>
+														</li>
+													{% else %}
+														<li>
+															<a href="?{% if clean_query %}{{ clean_query }}&{% endif %}page={{ i }}">{{ i }}</a>
+														</li>
+													{% endif %}
+												{% endfor %}
+
+												{% if products.has_next %}
+													<li>
+														<a href="?{% if clean_query %}{{ clean_query }}&{% endif %}page={{ products.next_page_number }}">
+															<i class="ion-ios-arrow-forward"></i>
+														</a>
+													</li>
+												{% endif %}
+											{% endwith %}
+										{% endwith %}
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="colorlib-partner">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8 offset-sm-2 text-center colorlib-heading colorlib-heading-sm">
+						<h2>Trusted Partners</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col partner-col text-center">
+						<img src="{% static 'images/brand-1.jpg' %}" class="img-fluid-2" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="{% static 'images/brand-2.jpg' %}" class="img-fluid-2" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="{% static 'images/brand-3.jpg' %}" class="img-fluid-2" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="{% static 'images/brand-4.jpg' %}" class="img-fluid-2" alt="Free html4 bootstrap 4 template">
+					</div>
+					<div class="col partner-col text-center">
+						<img src="{% static 'images/brand-5.jpg' %}" class="img-fluid-2" alt="Free html4 bootstrap 4 template">
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}

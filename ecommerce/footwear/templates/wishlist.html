@@ -1,0 +1,72 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="bread">
+                    <span><a href="{% url 'index' %}">Home</a></span> /
+                    <span>My Wishlist</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="colorlib-product">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-md-12">
+                <div class="product-name d-flex">
+                    <div class="one-forth text-left px-4">
+                        <span>Product Details</span>
+                    </div>
+                    <div class="one-eight text-center ml-auto">
+                        <span>Price</span>
+                    </div>
+                    <div class="one-eight text-center">
+                        <span>Move to Cart</span>
+                    </div>
+                    <div class="one-eight text-center px-4">
+                        <span>Remove</span>
+                    </div>
+                </div>
+
+                <!-- Wishlist Item 1 -->
+                {% for i in wishlist_items %}
+                <div class="product-cart d-flex">
+                    <div class="one-forth">
+                        <a href="{% url 'product_details' i.product.id %}">
+                        <div class="product-img" style="background-image: url({{ i.product.main_image.url }}); width: 100px;"></div></a>
+                        <div class="display-tc">
+                            <h3><a href="{% url 'product_details' i.product.id %}" style="font-size: large;">{{i.product.name}}</a></h3>
+                        </div>
+                    </div>
+                    <div class="one-eight text-center ml-auto">
+                        <div class="display-tc">
+                            <span class="price">${{i.product.price}}</span>
+                        </div>
+                    </div>
+                    <div class="one-eight text-center">
+                        <div class="display-tc">
+                            <a href="{% url 'add_to_cart' i.product.id %}" class="btn btn-primary btn-sm">Add to Cart</a>
+                        </div>
+                    </div>
+                    <div class="one-eight text-center">
+                        <form action="{% url 'remove_from_wishlist' i.id %}" method="post">
+                            <div class="display-tc">                                                {% csrf_token %}             
+                                <button type="submit" class="btn btn-link text-danger p-0 ml-5">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+               
+    </div>
+</div>
+{% endblock %}

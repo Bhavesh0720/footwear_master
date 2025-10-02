@@ -1,0 +1,145 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span>Support</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Support Section -->
+<div class="colorlib-support py-5">
+    <div class="container">
+        
+        <!-- Intro -->
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2>We’re Here to Help</h2>
+                <p class="text-muted">Have questions or need assistance? Our support team is available 24/7 to help you.</p>
+            </div>
+        </div>
+
+        <!-- Support Options -->
+        <div class="row text-center mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-mail display-4 mb-3 text-primary"></i>
+                    <h5>Email Support</h5>
+                    <p>Write to us at <a href="mailto:support@footwear.com">support@footwear.com</a> and we’ll get back within 24 hours.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-phone display-4 mb-3 text-success"></i>
+                    <h5>Phone Support</h5>
+                    <p>Call us at <strong>+1 800 123 4567</strong> for instant help from our team.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-bubbles display-4 mb-3 text-danger"></i>
+                    <h5>Live Chat</h5>
+                    <p>Chat with our support team directly on our website for quick assistance.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="row mb-5">
+            <div class="col-12 text-center mb-4">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="col-md-8 offset-md-2">
+                <div class="accordion" id="faqAccordion">
+                    
+                    <div class="card mb-3">
+                        <div class="card-header" id="faqOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne">
+                                    How long does delivery take?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Delivery usually takes 3–5 business days, depending on your location.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header" id="faqTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo">
+                                    Can I return or exchange products?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Yes, you can return or exchange products within 30 days of purchase.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header" id="faqThree">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree">
+                                    How do I track my order?
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                You will receive a tracking link via email once your order is shipped.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Helpful Resources -->
+        <div class="row text-center mt-5">
+            <div class="col-12 mb-4">
+                <h2>Helpful Resources</h2>
+                <p class="text-muted">Find quick answers and guides to make your shopping easier.</p>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-truck display-4 mb-3 text-primary"></i>
+                    <h5>Shipping Info</h5>
+                    <p><a href="#">Learn more about shipping options and delivery times.</a></p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-refresh display-4 mb-3 text-success"></i>
+                    <h5>Return Policy</h5>
+                    <p><a href="#">Read our easy return & exchange policy.</a></p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-lock display-4 mb-3 text-danger"></i>
+                    <h5>Account & Security</h5>
+                    <p><a href="#">Get help with your account and login security.</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

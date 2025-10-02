@@ -1,0 +1,174 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .team-member img {
+    width: 120px;          
+    height: 120px;        
+    object-fit: cover;    
+    border-radius: 50%;    
+}
+
+.team-member .img-wrapper {
+    overflow: hidden;      
+    width: 120px;
+    height: 120px;
+}
+
+</style>
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span>About</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="colorlib-about">
+    <div class="container">
+        <div class="row row-pb-lg align-items-center">
+            <!-- Video -->
+            <div class="col-sm-6 mb-3">
+				<div class="video colorlib-video" style="background-image: url({% static 'images/about.jpg' %});">
+					<a href="https://vimeo.com/channels/staffpicks/93951774" class="popup-vimeo"><i class="icon-play3"></i></a>
+					<div class="overlay"></div>
+				</div>
+			</div>
+            
+            <!-- Text -->
+            <div class="col-md-6">
+                <div class="about-wrap">
+                    <h2 class="mb-3">Footwear – The Leading eCommerce Store Globally</h2>
+                    <p class="mb-3">Founded with a passion for quality and style, we have grown to become a trusted name in online footwear and fashion. Our mission is to provide customers with a seamless shopping experience and products that combine comfort, durability, and design.</p>
+                    <p class="mb-3">From our humble beginnings to serving thousands of happy customers worldwide, our journey has been defined by innovation, dedication, and love for what we do.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="row mt-5">
+            <div class="col-md-6 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100 text-center">
+                    <i class="icon-bulb display-4 mb-3 text-primary"></i>
+                    <h4>Our Mission</h4>
+                    <p>To deliver high-quality, stylish footwear to our customers while ensuring convenience, sustainability, and outstanding service.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100 text-center">
+                    <i class="icon-eye display-4 mb-3 text-success"></i>
+                    <h4>Our Vision</h4>
+                    <p>To be the most trusted and innovative online footwear destination, creating memorable experiences for every customer worldwide.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="row mt-5 text-center">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-shopping-cart display-4 mb-3 text-primary"></i>
+                    <h4>Easy Shopping</h4>
+                    <p>Browse thousands of products quickly and conveniently from your device.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-truck display-4 mb-3 text-success"></i>
+                    <h4>Fast Delivery</h4>
+                    <p>Get your orders delivered safely and on time to your doorstep.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <i class="icon-heart display-4 mb-3 text-danger"></i>
+                    <h4>Customer Care</h4>
+                    <p>We provide 24/7 support to ensure an excellent shopping experience.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="row mt-5 text-center">
+            <div class="col-12 mb-4">
+                <h2>Meet Our Team</h2>
+                <p class="text-muted">Our team is made up of passionate professionals who love what they do.</p>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="team-member p-3 border rounded shadow-sm h-100 d-flex flex-column align-items-center">
+                    <div class="img-wrapper mb-3">
+                        <img src="{% static 'images/person2.jpg' %}" alt="John Doe" class="img-fluid rounded-circle">
+                    </div>
+                    <h5>John Doe</h5>
+                    <p class="text-muted">Founder & CEO</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="team-member p-3 border rounded shadow-sm h-100 d-flex flex-column align-items-center">
+                    <div class="img-wrapper mb-3">
+                        <img src="{% static 'images/person1.jpg' %}" alt="Millie Clerk" class="img-fluid rounded-circle">
+                    </div>
+                    <h5>Millie Clerk</h5>
+                    <p class="text-muted">Head of Marketing</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="team-member p-3 border rounded shadow-sm h-100 d-flex flex-column align-items-center">
+                    <div class="img-wrapper mb-3">
+                        <img src="{% static 'images/blog-1.jpg' %}" alt="Critian Brown" class="img-fluid rounded-circle">
+                    </div>
+                    <h5>Critian Brown</h5>
+                    <p class="text-muted">Product Manager</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+                <div class="team-member p-3 border rounded shadow-sm h-100 d-flex flex-column align-items-center">
+                    <div class="img-wrapper mb-3">
+                        <img src="{% static 'images/person3.jpg' %}" alt="Emily White" class="img-fluid rounded-circle">
+                    </div>
+                    <h5>Emily White</h5>
+                    <p class="text-muted">Customer Support</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Testimonials -->
+        <div class="row mt-5">
+            <div class="col-12 text-center mb-4">
+                <h2>What Our Customers Say</h2>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <p>"Great quality shoes and fast delivery! Highly recommended."</p>
+                    <strong>- Alex Johnson</strong>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <p>"Amazing variety and excellent customer support. Loved my shopping experience!"</p>
+                    <strong>- Sarah Lee</strong>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="p-4 border rounded shadow-sm h-100">
+                    <p>"Easy to browse, checkout was simple, and delivery was super fast."</p>
+                    <strong>- Michael Davis</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

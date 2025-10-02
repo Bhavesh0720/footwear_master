@@ -1,0 +1,259 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load tz %}
+{% block content %}
+<div class="breadcrumbs">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span> {{products.main_category}}
+					</span> / <span> {{products.sub_category}}</span> / <span>{{products.name}}</span></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="colorlib-product">
+	<div class="container">
+		<div class="row row-pb-lg product-detail-wrap">
+			<div class="col-sm-8">
+				<div class="owl-carousel">
+					{% for img in carousel_images%}
+					<div class="item">
+						<div class="product-entry border">
+							<img src="{{ img.images.url }}" class="img-fluid-1" alt="{{products.name}}">
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			
+			<div class="col-sm-4">
+				<div class="product-desc">
+					<h3>{{products.name}}</h3>
+					<p class="price">
+						<span>₹{{products.price}}</span>
+						<span class="rate">
+							{% for i in "12345" %}
+								{% if i|add:0 <= average_rating %}
+									<i class="icon-star-full"></i>
+								{% elif i|add:0 > average_rating and i|add:-1 < average_rating %}
+									<i class="icon-star-half"></i>
+								{% else %}
+									<i class="icon-star-empty"></i>
+								{% endif %}
+							{% endfor %}
+							({{ review_count }} Reviews)
+						</span>
+					</p>
+					<p>{{products.detail|safe}}</p>
+
+					<form method="POST" action="{% url 'add_to_cart' products.id %}">
+    				{% csrf_token %}
+						<div class="size-wrap">
+							<div class="block-26 mb-2">
+								<h4>Color</h4>
+								<ul>
+									{% for i in products.colors.all %}
+									<label>
+										<input type="radio" name="color" value="{{ i.id }}" required>
+										{{ i.color }}
+									</label>
+									{% endfor %}
+								</ul>
+							</div>
+							<div class="size-wrap">
+								<div class="block-26 mb-2">
+									<h4>Size</h4>
+									<ul>
+										{% for i in sizes %}
+										<label>
+											<input type="radio" name="size" value="{{ i.id }}" required>
+											{{ i.value }}
+										</label>
+										{% endfor %}
+									</ul>
+								</div>
+								<div class="block-26 mb-4">
+									<h4>Width</h4>
+									<ul>
+										{% for i in widths %}
+										<label>
+											<input type="radio" name="width" value="{{ i.id }}" required>
+											{{ i.value }}
+										</label>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+
+							<!-- Quantity -->
+							<div class="input-group mb-4">
+								<span class="input-group-btn">
+									<button type="button" class="quantity-left-minus btn">
+										<i class="icon-minus2"></i>
+									</button>
+								</span>
+								<input type="number" id="quantity" name="quantity" class="form-control input-number"
+									value="1" min="1" max="100">
+								<span class="input-group-btn ml-1">
+									<button type="button" class="quantity-right-plus btn">
+										<i class="icon-plus2"></i>
+									</button>
+								</span>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 text-center mb-5">
+									<button type="submit" class="btn btn-primary btn-addtocart pt-3 pb-3">
+										<i class="icon-shopping-cart"><span>Add to Cart</span></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-md-12 pills">
+							<div class="bd-example bd-example-tabs">
+								<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+									<li class="nav-item">
+										<a class="nav-link active" id="pills-description-tab" data-toggle="pill"
+											href="#pills-description" role="tab" aria-controls="pills-description"
+											aria-expanded="true">Description</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill"
+											href="#pills-manufacturer" role="tab" aria-controls="pills-manufacturer"
+											aria-expanded="true">Manufacturer</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="pills-review-tab" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-expanded="true">Review</a>
+									</li>
+								</ul>
+
+								<div class="tab-content" id="pills-tabContent">
+									<div class="tab-pane border fade show active" id="pills-description" role="tabpanel"
+										aria-labelledby="pills-description-tab">
+										{{products.description|safe}}
+									</div>
+
+									<div class="tab-pane border fade" id="pills-manufacturer" role="tabpanel"
+										aria-labelledby="pills-manufacturer-tab">
+										{{products.manufacturer|safe}}
+									</div>
+
+								<!-- reviews -->
+								<div class="tab-pane border fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
+									<div class="row">
+										<div class="col-md-8">
+											<h3 class="head">{{ review_count }} Reviews (Avg: {{ average_rating }}/5)</h3>
+
+											{% for review in reviews %}
+											<div class="review">
+												<div class="desc">
+													<h4>
+														<span class="text-left">{{ review.user.name }}</span>
+														<span class="text-right">{{ review.created_at|localtime|date:"h:i A d M Y" }}</span>
+													</h4>
+													<p class="star">
+														<span>
+															{% for i in "12345" %}
+																{% if forloop.counter <= review.rating %}
+																	<i class="icon-star-full"></i>
+																{% else %}
+																	<i class="icon-star-empty"></i>
+																{% endif %}
+															{% endfor %}
+														</span>
+													</p>
+													<p>{{ review.comment }}</p>
+												</div>
+											</div>
+											{% empty %}
+											<p>No reviews yet. Be the first to review!</p>
+											{% endfor %}
+										</div>
+										<div class="col-md-4">
+											<div class="rating-wrap">
+												<h3 class="head">Ratings Breakdown</h3>
+												<div class="wrap">
+													{% for star, count in distribution.items reversed %}
+													<p class="star">
+														<span>
+															{% for i in "12345" %}
+																{% if forloop.counter <= star %}
+																	<i class="icon-star-full"></i>
+																{% else %}
+																	<i class="icon-star-empty"></i>
+																{% endif %}
+															{% endfor %}
+														</span>
+														<span>{{ count }} Reviews</span>
+													</p>
+													{% endfor %}
+												</div>
+												
+												<!-- Give a Review Section -->
+												<h3 class="head">Give a Review</h3>
+												<form method="post" action="{% url 'submit_review' products.id %}">
+													{% csrf_token %}
+													<div class="form-group">
+														<label for="rating">Rating:</label>
+														<select name="rating" id="rating" class="form-control">
+															<option value="5">5 - Excellent</option>
+															<option value="4">4 - Very Good</option>
+															<option value="3">3 - Good</option>
+															<option value="2">2 - Fair</option>
+															<option value="1">1 - Poor</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<label for="comment">Comment:</label>
+														<textarea name="comment" id="comment" class="form-control" rows="3"></textarea>
+													</div>
+													<button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const minusBtn = document.querySelector(".quantity-left-minus");
+		const plusBtn = document.querySelector(".quantity-right-plus");
+		const qtyInput = document.querySelector("#quantity");
+
+		minusBtn.addEventListener("click", function () {
+			let currentVal = parseInt(qtyInput.value) || 1;
+			if (currentVal > parseInt(qtyInput.min)) {
+				qtyInput.value = currentVal - 1;
+			}
+		});
+
+		plusBtn.addEventListener("click", function () {
+			let currentVal = parseInt(qtyInput.value) || 1;
+			if (currentVal < parseInt(qtyInput.max)) {
+				qtyInput.value = currentVal + 1;
+			}
+		});
+	});
+</script>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p class="bread"><span><a href="{% url 'index' %}">Home</a></span> / <span>Privacy Policy</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="colorlib-about py-5" style="background: #f9f9f9;">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-sm-12">
+                <div class="about-wrap p-4 p-md-5 bg-white shadow-sm rounded">
+                    <h2 class="mb-4 text-center text-primary">Privacy Policy</h2>
+                    <p class="lead text-muted text-center mb-5">Your privacy is our top priority. Here's how we protect your personal information.</p>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="icon-user mr-2 text-primary"></i>Information We Collect</h4>
+                        <p>We may collect personal information such as your name, email address, shipping/billing address, phone number, and payment details when you use our website.</p>
+                    </div>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="icon-info mr-2 text-primary"></i>How We Use Your Information</h4>
+                        <p>We use your information to process orders, provide customer support, improve our services, and send important updates or promotions (only if you opt-in).</p>
+                    </div>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="fa-solid fa-share-nodes mr-2 text-primary"></i>Sharing of Information</h4>
+                        <p>We do not sell or rent your personal information to third parties. However, we may share information with trusted service providers who help us operate our store (such as payment gateways and shipping companies).</p>
+                    </div>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="icon-lock mr-2 text-primary"></i>Data Security</h4>
+                        <p>We implement industry-standard security measures to protect your personal data. However, no method of transmission over the Internet is 100% secure.</p>
+                    </div>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="icon-settings mr-2 text-primary"></i>Your Rights</h4>
+                        <p>You have the right to access, update, or delete your personal information by contacting us directly.</p>
+                    </div>
+                    
+                    <div class="privacy-section mb-4">
+                        <h4><i class="icon-refresh mr-2 text-primary"></i>Changes to This Policy</h4>
+                        <p>We may update this Privacy Policy from time to time. Updates will be posted on this page with the revised date.</p>
+                    </div>
+                    
+                    <p class="text-center mt-4">If you have any questions regarding our Privacy Policy, please <a href="{% url 'contact' %}" class="text-primary font-weight-bold">contact us</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

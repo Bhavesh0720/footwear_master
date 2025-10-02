@@ -1,0 +1,51 @@
+{% extends "index.html" %}
+{% block content %}
+<h2 class="text-center">Your Orders</h2>
+
+{% if orders %}
+    {% for order in orders %}
+    <div class="order-card" style="border:1px solid #ccc; padding:15px; margin-bottom:20px;">
+        <h4>Order #{{ forloop.counter }} | Placed on: {{ order.created_at|date:"d M Y H:i" }}</h4>
+        <p>Payment Method: {{ order.payment_method }} | Status: {% if order.payment_status %}Paid{% else %}Pending{% endif %}</p>
+        <p>Shipping Address: {{ order.address.address }}</p>
+
+        <table class="table table-bordered mt-2">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Options</th>
+                    <th>Quantity</th>
+                    <th>Price (per item)</th>
+                    <th>Shipping Cost</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        {% if item.color %}Color: {{ item.color.color }}{% endif %}
+                        {% if item.size %} | Size: {{ item.size.value }}{% endif %}
+                        {% if item.width %} | Width: {{ item.width.value }}{% endif %}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>₹{{ shipping_cost }}.00</td>
+                    <td>₹{{ order.discount }}.00</td>
+                    <td>₹{{ item.quantity }} X {{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="text-right"><strong><h5 class="text-right">Final Amount: ₹{{ order.final_amount }}</h5></strong></p>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="text-center">
+        <h4>You have no orders yet.</h4>
+    </div>
+{% endif %}
+{% endblock %}
